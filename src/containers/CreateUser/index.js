@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { firebaseConnect, dataToJS } from 'react-redux-firebase';
-import { Field, reduxForm } from 'redux-form';
+import { firebaseConnect } from 'react-redux-firebase';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -66,9 +64,7 @@ class CreateUser extends React.Component {
                             {this.displayErrors()}
                             {this.redirectUser()}
                             <div className="field">
-                                <label htmlFor="email" className="label is-medium">
-                                    Email:
-                                </label>
+                                <div className="label is-medium">Email:</div>
                                 <div className="control">
                                     <input
                                         value={this.state.email}
@@ -81,9 +77,7 @@ class CreateUser extends React.Component {
                                 </div>
                             </div>
                             <div className="field">
-                                <label htmlFor="username" className="label is-medium">
-                                    Username:
-                                </label>
+                                <div className="label is-medium">Username:</div>
                                 <div className="control">
                                     <input
                                         value={this.state.username}
@@ -97,14 +91,13 @@ class CreateUser extends React.Component {
                             </div>
 
                             <div className="field">
-                                <label htmlFor="password" className="label is-medium">
-                                    Password:
-                                </label>
+                                <div className="label is-medium">Password:</div>
                                 <div className="control">
                                     <input
                                         value={this.state.password}
                                         type="password"
                                         name="password"
+                                        id="password"
                                         onChange={this.handleChange}
                                         className="input is-medium"
                                         placeholder="password"
