@@ -2,9 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Header = props => (
-    <div className="navbar">
-        <Link to="/create-user">Create user</Link>
-        <Link to="/login">Login</Link>
+    <div className="header hero-head">
+        <header className="navbar">
+            <div className="container">
+                <Link to="/create-user" className="navbar-item">
+                    Create user
+                </Link>
+                <Link to="/login" className="navbar-item">
+                    Login
+                </Link>
+            </div>
+        </header>
     </div>
 );
 
