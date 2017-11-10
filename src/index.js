@@ -6,6 +6,7 @@ import './bulma.css';
 
 import configureStore from './store';
 
+import Dashboard from './containers/Dashboard';
 import CreateUser from './containers/CreateUser';
 import Login from './containers/Login';
 
@@ -15,6 +16,7 @@ render(
     <BrowserRouter>
         <Provider store={store}>
             <Switch>
+                <Route path="/dashboard" component={Dashboard} />
                 <Route path="/login" component={Login} />
                 <Route path="/" component={CreateUser} />
             </Switch>
