@@ -2,6 +2,9 @@ import React from 'react';
 import { firebaseConnect } from 'react-redux-firebase';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { LOGIN, DASHBOARD } from '../../consts/routes';
 
 import './style.css';
 
@@ -49,7 +52,7 @@ class CreateUser extends React.Component {
 
     redirectUser() {
         if (this.state.accountCreated) {
-            return <Redirect to="/dashboard" />;
+            return <Redirect to={DASHBOARD} />;
         }
     }
 
@@ -113,7 +116,7 @@ class CreateUser extends React.Component {
                         </button>
                         <div className="is-size-5">
                             Or{' '}
-                            <Link to="/login" className="has-text-weight-bold has-text-primary">
+                            <Link to={LOGIN} className="has-text-weight-bold has-text-primary">
                                 login
                             </Link>{' '}
                             if you already have an account.
@@ -124,6 +127,10 @@ class CreateUser extends React.Component {
         );
     }
 }
+
+CreateUser.propTypes = {
+    firebase: PropTypes.objectOf(PropTypes.func).isRequired,
+};
 
 const fbWrapped = firebaseConnect()(CreateUser);
 

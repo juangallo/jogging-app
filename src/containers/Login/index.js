@@ -1,7 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { firebaseConnect } from 'react-redux-firebase';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+
+import { DASHBOARD, CREATE_USER } from '../../consts/routes';
 
 import './style.css';
 
@@ -51,7 +54,7 @@ class Login extends React.Component {
 
     redirectUser() {
         if (this.state.successfulLogin) {
-            return <Redirect to="/dashboard" />;
+            return <Redirect to={DASHBOARD} />;
         }
     }
 
@@ -104,7 +107,7 @@ class Login extends React.Component {
                         <div className="is-size-5">
                             {'Or '}
                             <Link
-                                to="/create-user"
+                                to={CREATE_USER}
                                 className="has-text-weight-bold has-text-primary"
                             >
                                 {'sign up'}
@@ -117,6 +120,10 @@ class Login extends React.Component {
         );
     }
 }
+
+Login.propTypes = {
+    firebase: PropTypes.objectOf(PropTypes.func).isRequired,
+};
 
 const fbWrapped = firebaseConnect()(Login);
 
