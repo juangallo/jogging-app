@@ -1,45 +1,59 @@
-import React from "react";
-import { connect } from 'react-redux'
-import { firebaseConnect, firebase, dataToJS } from 'react-redux-firebase'
-import TimesTable from "../../components/TimesTable";
-import * as _ from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
+import { firebaseConnect, dataToJS, pathToJS, isLoaded } from 'react-redux-firebase';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { iterateRecords } from '../../utils';
+import TimesTable from '../../components/TimesTable';
 
-import "./style.css";
+import { EDIT_RECORD } from '../../consts/routes';
+
+import './style.css';
 
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props)
-  }
+    render() {
+        return (
+            <div className="login hero is-fullheight">
+                <div className="hero-body">
+                    <div className="container has-text-centered">
+                        <Link to={EDIT_RECORD}>
+                            <button className="add-record-button button is-primary is-medium">
+                                Add Record
+                            </button>
+                        </Link>
 
-  render() {
-    const recordsArray = _.values(this.props.records);
-    return (
-      <div className="login hero is-fullheight">
-        <div className="hero-body">
-          <div className="container has-text-centered">
-
-            <button onClick={() => this.props.firebase.push('records', { date: '1510339504', distance: '1000', time: '3600', user: '01uSHdH1SBZjNMazjKZbO5OORJR2' })}>
-              Set To Firebase
-            </button>
-
-
-            <TimesTable records={recordsArray} />
-          </div>
-        </div>
-      </div>
-    );
-  }
+                        <TimesTable
+                            records={iterateRecords(this.props.records)}
+                            recordsLoaded={isLoaded(this.props.records)}
+                            deleteRow={this.deleteRow}
+                        />
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
 
-const fbWrapped = firebaseConnect([
-  {
-    path: 'records',
-    queryParams: ['orderByChild=user', 'equalTo=01uSHdH1SBZjNMazjKZbO5OORJR2'],
-  }
-])(Dashboard)
+Dashboard.defaultProps = {
+    records: undefined,
+};
 
-export default connect(
-  ({firebase}) => ({
+Dashboard.propTypes = {
+    records: PropTypes.objectOf(PropTypes.object),
+};
+
+const authConnected = connect(({ firebase }) => ({
+    auth: pathToJS(firebase, 'auth'),
+}))(Dashboard);
+
+const fbWrapped = firebaseConnect(({ auth }) => [
+    {
+        path: 'records',
+        queryParams: ['orderByChild=user', `equalTo=${auth ? auth.uid : ''}`],
+    },
+])(authConnected);
+
+export default connect(({ firebase }, { auth }) => ({
     records: dataToJS(firebase, 'records'),
-  })
-)(fbWrapped)
+    auth: pathToJS(firebase, 'auth'),
+}))(fbWrapped);

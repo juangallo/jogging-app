@@ -3,15 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "cleave.js": "^1.0.6",
     "firebase": "^4.6.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "font-awesome": "^4.7.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.19.2",
+    "prop-types": "^15.6.0",
+    "react": "^16.1.0",
+    "react-addons-shallow-compare": "^15.6.2",
+    "react-dates": "^15.1.0",
+    "react-dom": "^16.1.0",
     "react-redux": "^5.0.6",
     "react-redux-firebase": "^1.5.1",
     "react-router-dom": "^4.2.2",
+    "react-router-prop-types": "0.0.2",
     "react-scripts": "1.0.17",
     "redux": "^3.7.2",
-    "redux-form": "^7.1.2",
     "redux-thunk": "^2.2.0"
   },
   "scripts": {
@@ -25,6 +32,7 @@
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.4.0"
+    "eslint-plugin-react": "^7.4.0",
+    "riek": "^1.1.0"
   }
 }
