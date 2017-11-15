@@ -17,7 +17,7 @@ const TableRow = props => (
                 .seconds(props.time)
                 .format('HH:mm:SS')}
         </td>
-        <td>{convertToKmH(props.speed).toFixed(2)} km/h</td>
+        <td>{convertToKmH(props.speed)} km/h</td>
         <td>
             <button onClick={() => props.firebase.remove(`records/${props.id}`)}>
                 <i className="fa fa-trash" />
@@ -43,6 +43,7 @@ const TableRow = props => (
 );
 
 TableRow.propTypes = {
+    id: PropTypes.string.isRequired,
     date: PropTypes.number.isRequired,
     distance: PropTypes.number.isRequired,
     speed: PropTypes.number.isRequired,

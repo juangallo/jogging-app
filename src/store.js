@@ -11,7 +11,15 @@ const fbConfig = {
 
 export default function configureStore(initialState, history) {
     const createStoreWithMiddleware = compose(
-        reduxFirebase(fbConfig, { userProfile: 'users' }),
+        reduxFirebase(fbConfig, {
+            userProfile: 'users',
+            profileParamsToPopulate: [['role:roles']],
+            profileFactory: (userData, profileData) => ({
+                email: userData.email,
+                role: 'user',
+                username: profileData.username,
+            }),
+        }),
         // Redux Devtools
         typeof window === 'object' && typeof window.devToolsExtension !== 'undefined'
             ? window.devToolsExtension()

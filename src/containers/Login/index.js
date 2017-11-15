@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { firebaseConnect } from 'react-redux-firebase';
+import { firebaseConnect, pathToJS } from 'react-redux-firebase';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { DASHBOARD, CREATE_USER } from '../../consts/routes';
+import { DASHBOARD, CREATE_USER, MANAGEMENT } from '../../consts/routes';
 
 import './style.css';
 
@@ -35,7 +35,7 @@ class Login extends React.Component {
             })
             .then(userData =>
                 (userData
-                    ? this.setState({ successfulLogin: true, errorMessage: '' })
+                    ? this.setState({ errorMessage: '', successfulLogin: true })
                     : this.setState({ successfulLogin: false })))
             .catch(error => this.setState({ errorMessage: error.message, successfulLogin: false }));
     }
@@ -53,8 +53,15 @@ class Login extends React.Component {
     }
 
     redirectUser() {
-        if (this.state.successfulLogin) {
-            return <Redirect to={DASHBOARD} />;
+        if (this.state.successfulLogin && this.props.profile) {
+            switch (this.props.profile.role) {
+            case 'manager':
+                return <Redirect push to={MANAGEMENT} />;
+            case 'user':
+                return <Redirect push to={DASHBOARD} />;
+            default:
+                return <div className="notification is-danger">Invalid Role</div>;
+            }
         }
     }
 
@@ -121,13 +128,17 @@ class Login extends React.Component {
     }
 }
 
+Login.defaultProps = {
+    profile: {},
+};
+
 Login.propTypes = {
     firebase: PropTypes.objectOf(PropTypes.func).isRequired,
+    profile: PropTypes.objectOf(PropTypes.string),
 };
 
 const fbWrapped = firebaseConnect()(Login);
 
-export default connect(state => ({
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
+export default connect(({ firebase }) => ({
+    profile: pathToJS(firebase, 'profile'),
 }))(fbWrapped);
