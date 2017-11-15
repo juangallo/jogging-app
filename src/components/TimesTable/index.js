@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import TableRow from '../../containers/TableRow';
+import RecordsTableRow from '../../containers/RecordsTableRow';
 
 const TimesTable = (props) => {
     const { records } = props;
     if (records && records.length > 0) {
         const tableRows = records.map(record => (
-            <TableRow
+            <RecordsTableRow
                 key={record.id}
                 id={record.id}
                 date={record.date}

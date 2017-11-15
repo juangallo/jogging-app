@@ -9,5 +9,6 @@ export function iterateRecords(records) {
 }
 
 export function convertToKmH(speed) {
-    return speed * 3.6;
+    const inKmh = speed * 3.6;
+    return inKmh.toFixed(2);
 }
