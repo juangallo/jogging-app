@@ -1,14 +1,14 @@
 import React from 'react';
-import { firebaseConnect, pathToJS } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { MANAGEMENT } from '../../consts/routes';
+import { LOGIN, DASHBOARD } from '../../consts/routes';
 
 import './style.css';
 
-class CreateUser extends React.Component {
+class SignUp extends React.Component {
     constructor(props) {
         super(props);
 
@@ -16,7 +16,6 @@ class CreateUser extends React.Component {
             email: '',
             password: '',
             username: '',
-            role: '',
             errorMessage: '',
             accountCreated: false,
         };
@@ -28,12 +27,10 @@ class CreateUser extends React.Component {
     }
 
     createNewUser() {
-        const {
-            email, password, username, role,
-        } = this.state;
+        const { email, password, username } = this.state;
 
         this.props.firebase
-            .createUser({ email, password, signIn: false }, { username, email, role })
+            .createUser({ email, password }, { username, email })
             .then(userData =>
                 (userData
                     ? this.setState({ accountCreated: true })
@@ -55,7 +52,7 @@ class CreateUser extends React.Component {
 
     redirectUser() {
         if (this.state.accountCreated) {
-            return <Redirect to={MANAGEMENT} />;
+            return <Redirect to={DASHBOARD} />;
         }
     }
 
@@ -64,7 +61,8 @@ class CreateUser extends React.Component {
             <div className="create-user hero is-dark is-fullheight">
                 <div className="hero-body">
                     <div className="container has-text-centered">
-                        <h1 className="title is-1">Create User</h1>
+                        <h1 className="title is-1">Jogging Time Tracker</h1>
+                        <h2 className="subtitle is-3">Sign up</h2>
                         <form className="container create-user-form" onSubmit={this.createNewUser}>
                             {this.displayErrors()}
                             {this.redirectUser()}
@@ -94,22 +92,6 @@ class CreateUser extends React.Component {
                                     />
                                 </div>
                             </div>
-                            <div className="field">
-                                <div className="label is-medium">Role:</div>
-                                <div className="control">
-                                    <div className="select is-medium">
-                                        <select
-                                            name="role"
-                                            value={this.state.role}
-                                            onChange={this.handleChange}
-                                            className="select is-medium"
-                                        >
-                                            <option value="user">User</option>
-                                            <option value="manager">Manager</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
 
                             <div className="field">
                                 <div className="label is-medium">Password:</div>
@@ -126,18 +108,18 @@ class CreateUser extends React.Component {
                                 </div>
                             </div>
                         </form>
-                        <div>
-                            <Link to={MANAGEMENT} className="has-text-weight-bold has-text-primary">
-                                <button className="button is-danger is-medium cancel-button">
-                                    Cancel
-                                </button>
-                            </Link>
-                            <button
-                                onClick={this.createNewUser}
-                                className="button is-primary is-medium create-user-button"
-                            >
-                                Create User
-                            </button>
+                        <button
+                            onClick={this.createNewUser}
+                            className="button is-primary is-medium signup-button"
+                        >
+                            Sign Up
+                        </button>
+                        <div className="is-size-5">
+                            Or{' '}
+                            <Link to={LOGIN} className="has-text-weight-bold has-text-primary">
+                                login
+                            </Link>{' '}
+                            if you already have an account.
                         </div>
                     </div>
                 </div>
@@ -146,13 +128,13 @@ class CreateUser extends React.Component {
     }
 }
 
-CreateUser.propTypes = {
+SignUp.propTypes = {
     firebase: PropTypes.objectOf(PropTypes.func).isRequired,
 };
 
-const fbWrapped = firebaseConnect()(CreateUser);
+const fbWrapped = firebaseConnect()(SignUp);
 
-export default connect(({ firebase }) => ({
-    profile: pathToJS(firebase, 'profile'),
-    auth: pathToJS(firebase, 'auth'),
+export default connect(state => ({
+    auth: state.firebase.auth,
+    profile: state.firebase.profile,
 }))(fbWrapped);

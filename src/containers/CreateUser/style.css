@@ -6,8 +6,13 @@
 .create-user-form {
   max-width: 500px;
 }
-.signup-button {
+.create-user-button {
   max-width: 500px;
-  width: 100%;
-  margin: 1em 0 0.7em 0;
+  width: 40%;
+  margin: 1em 0em 0.7em 0;
+}
+.cancel-button {
+  max-width: 500px;
+  width: 40%;
+  margin: 1em 1em 0.7em 0;
 }

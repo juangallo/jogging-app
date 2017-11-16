@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import { filter } from 'lodash';
 import { iterateRecords } from '../../utils';
 
+import { CREATE_USER } from '../../consts/routes';
+
 import UsersTable from '../UsersTable';
 
 class Management extends Component {
@@ -28,7 +30,14 @@ class Management extends Component {
                 <div className="hero-body">
                     <div className="container has-text-centered">
                         <div className="title is-1">Management</div>
-                        <div>{this.renderTable()}</div>
+                        <div>
+                            <Link to={CREATE_USER}>
+                                <button className="add-record-button button is-primary is-medium">
+                                    Add User
+                                </button>
+                            </Link>
+                            {this.renderTable()}
+                        </div>
                     </div>
                 </div>
             </div>

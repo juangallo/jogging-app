@@ -6,12 +6,13 @@ import './bulma.css';
 
 import configureStore from './store';
 
-import { EDIT_RECORD, MANAGEMENT, DASHBOARD, LOGIN, HOME } from './consts/routes';
+import { CREATE_USER, EDIT_RECORD, MANAGEMENT, DASHBOARD, LOGIN, HOME } from './consts/routes';
 
+import CreateUser from './containers/CreateUser';
 import EditRecord from './containers/EditRecord';
 import Manager from './containers/Management';
 import Dashboard from './containers/Dashboard';
-import CreateUser from './containers/CreateUser';
+import SignUp from './containers/SignUp';
 import Login from './containers/Login';
 
 const store = configureStore({});
@@ -20,12 +21,13 @@ render(
     <BrowserRouter>
         <Provider store={store}>
             <Switch>
+                <Route path={CREATE_USER} component={CreateUser} />
                 <Route path={`${EDIT_RECORD}/:recordId`} component={EditRecord} />
                 <Route path={EDIT_RECORD} component={EditRecord} />
                 <Route path={MANAGEMENT} component={Manager} />
                 <Route path={DASHBOARD} component={Dashboard} />
                 <Route path={LOGIN} component={Login} />
-                <Route path={HOME} component={CreateUser} />
+                <Route path={HOME} component={SignUp} />
             </Switch>
         </Provider>
     </BrowserRouter>,

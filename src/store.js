@@ -5,7 +5,7 @@ import rootReducer from './reducers/rootReducer';
 // Replace with your Firebase config
 const fbConfig = {
     apiKey: ' AIzaSyC_xnDNyyVmv4YUsLsGtyrb3WADdaeDt18',
-    authDomain: 'localhost',
+    authDomain: ' jogging-times-tracker.firebaseapp.com',
     databaseURL: 'https://jogging-times-tracker.firebaseio.com/',
 };
 
@@ -16,7 +16,7 @@ export default function configureStore(initialState, history) {
             profileParamsToPopulate: [['role:roles']],
             profileFactory: (userData, profileData) => ({
                 email: userData.email,
-                role: 'user',
+                role: profileData.role || 'user',
                 username: profileData.username,
             }),
         }),

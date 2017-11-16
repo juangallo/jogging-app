@@ -1,0 +1,13 @@
+.label {
+  color: #fff;
+  text-align: left;
+  margin-bottom: 0px;
+}
+.create-user-form {
+  max-width: 500px;
+}
+.signup-button {
+  max-width: 500px;
+  width: 100%;
+  margin: 1em 0 0.7em 0;
+}
