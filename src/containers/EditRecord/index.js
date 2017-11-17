@@ -115,6 +115,7 @@ class EditRecord extends React.Component {
                                 <div className="control">
                                     <SingleDatePicker
                                         date={this.state.date ? this.state.date : null} // momentPropTypes.momentObj or null
+                                        numberOfMonths={1}
                                         onDateChange={date => this.setState({ date })} // PropTypes.func.isRequired
                                         focused={this.state.focused} // PropTypes.bool
                                         onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
