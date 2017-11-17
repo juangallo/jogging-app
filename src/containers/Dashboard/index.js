@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { iterateRecords } from '../../utils';
 import TimesTable from '../../components/TimesTable';
+import Report from '../../containers/Report';
 
 import { EDIT_RECORD } from '../../consts/routes';
 
@@ -12,6 +13,8 @@ import './style.css';
 
 class Dashboard extends React.Component {
     render() {
+        const records = iterateRecords(this.props.records).sort((a, b) => b.date - a.date);
+
         return (
             <div className="login hero is-fullheight">
                 <div className="hero-body">
@@ -23,10 +26,17 @@ class Dashboard extends React.Component {
                         </Link>
 
                         <TimesTable
-                            records={iterateRecords(this.props.records)}
+                            records={records}
                             recordsLoaded={isLoaded(this.props.records)}
                             deleteRow={this.deleteRow}
                         />
+
+                        <h1>Weekly Report</h1>
+                        {isLoaded(this.props.records) ? (
+                            <Report records={records} />
+                        ) : (
+                            <div>Loading...</div>
+                        )}
                     </div>
                 </div>
             </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import RecordsTableRow from '../../containers/RecordsTableRow';
+import './style.css';
 
 const TimesTable = (props) => {
     const { records } = props;

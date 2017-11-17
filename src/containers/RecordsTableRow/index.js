@@ -15,7 +15,7 @@ const TableRow = props => (
             {moment()
                 .startOf('d')
                 .seconds(props.time)
-                .format('HH:mm:SS')}
+                .format('HH:mm')}
         </td>
         <td>{convertToKmH(props.speed)} km/h</td>
         <td>
