@@ -11,3 +11,6 @@
   width: 100%;
   margin: 1em 0 0.7em 0;
 }
+.login-container {
+  max-width: 500px;
+}

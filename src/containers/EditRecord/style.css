@@ -1,3 +1,6 @@
 .distance-input {
   display: inline;
 }
+.record-container {
+  max-width: 500px;
+}

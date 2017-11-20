@@ -101,7 +101,7 @@ class EditRecord extends React.Component {
         return (
             <div className="edit-record hero is-dark is-fullheight">
                 <div className="hero-body">
-                    <div className="container has-text-centered">
+                    <div className="container has-text-centered record-container">
                         {this.props.match.params.recordId ? (
                             <h1 className="title is-1">Edit Record</h1>
                         ) : (

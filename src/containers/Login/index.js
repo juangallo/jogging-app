@@ -69,7 +69,7 @@ class Login extends React.Component {
         return (
             <div className="login hero is-dark is-fullheight">
                 <div className="hero-body">
-                    <div className="container has-text-centered">
+                    <div className="container has-text-centered login-container">
                         <h1 className="title is-1">Jogging Time Tracker</h1>
                         <h2 className="subtitle is-3">Login</h2>
 

@@ -5,17 +5,17 @@ import { getWeeklyAvgArr, getWeekDates } from '../../utils';
 
 const Report = (props) => {
     const data = {
-        labels: getWeekDates(4),
+        labels: getWeekDates(props.weeks),
         datasets: [
             {
                 label: 'Distance (km)',
-                data: getWeeklyAvgArr(props.records, 'distances', 4),
+                data: getWeeklyAvgArr(props.records, 'distances', props.weeks),
                 borderColor: 'rgba(255,99,132,1)',
                 borderWidth: 3,
             },
             {
                 label: 'Avg. Speed (km/h)',
-                data: getWeeklyAvgArr(props.records, 'speeds', 4),
+                data: getWeeklyAvgArr(props.records, 'speeds', props.weeks),
                 borderColor: 'rgba(2, 200, 2)',
                 borderWidth: 3,
             },
@@ -26,7 +26,8 @@ const Report = (props) => {
 };
 
 Report.propTypes = {
-    records: PropTypes.objectOf(PropTypes.object).isRequired,
+    records: PropTypes.arrayOf(PropTypes.object).isRequired,
+    weeks: PropTypes.number.isRequired,
 };
 
 export default Report;
