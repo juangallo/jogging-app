@@ -1,43 +1,41 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { firebaseConnect, pathToJS } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import { DASHBOARD, HOME, MANAGEMENT } from '../../consts/routes';
+import { LOGIN, DASHBOARD } from '../../consts/routes';
 
 import './style.css';
 
-class Login extends React.Component {
+class SignUp extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             email: '',
             password: '',
+            username: '',
             errorMessage: '',
-            successfulLogin: false,
+            accountCreated: false,
         };
 
-        this.login = this.login.bind(this);
+        this.createNewUser = this.createNewUser.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.displayErrors = this.displayErrors.bind(this);
         this.redirectUser = this.redirectUser.bind(this);
     }
 
-    login() {
-        const { email, password } = this.state;
+    createNewUser() {
+        const { email, password, username } = this.state;
 
         this.props.firebase
-            .login({
-                email,
-                password,
-            })
+            .createUser({ email, password }, { username, email })
             .then(userData =>
                 (userData
-                    ? this.setState({ errorMessage: '', successfulLogin: true })
-                    : this.setState({ successfulLogin: false })))
-            .catch(error => this.setState({ errorMessage: error.message, successfulLogin: false }));
+                    ? this.setState({ accountCreated: true })
+                    : this.setState({ accountCreated: false })))
+            .catch(error => this.setState({ errorMessage: error.message }));
     }
 
     handleChange(event) {
@@ -53,28 +51,19 @@ class Login extends React.Component {
     }
 
     redirectUser() {
-        if (this.state.successfulLogin && this.props.profile) {
-            switch (this.props.profile.role) {
-            case 'manager':
-            case 'admin':
-                return <Redirect push to={MANAGEMENT} />;
-            case 'user':
-                return <Redirect push to={DASHBOARD} />;
-            default:
-                return <div className="notification is-danger">Invalid Role</div>;
-            }
+        if (this.state.accountCreated) {
+            return <Redirect to={DASHBOARD} />;
         }
     }
 
     render() {
         return (
-            <div className="login hero is-dark is-fullheight">
+            <div className="create-user hero is-dark is-fullheight">
                 <div className="hero-body">
-                    <div className="container has-text-centered login-container">
+                    <div className="container has-text-centered">
                         <h1 className="title is-1">Jogging Time Tracker</h1>
-                        <h2 className="subtitle is-3">Login</h2>
-
-                        <form className="container login-form" onSubmit={this.login}>
+                        <h2 className="subtitle is-3">Sign up</h2>
+                        <form className="container create-user-form" onSubmit={this.createNewUser}>
                             {this.displayErrors()}
                             {this.redirectUser()}
                             <div className="field">
@@ -87,6 +76,19 @@ class Login extends React.Component {
                                         onChange={this.handleChange}
                                         className="input is-medium"
                                         placeholder="user@email.com"
+                                    />
+                                </div>
+                            </div>
+                            <div className="field">
+                                <div className="label is-medium">Username:</div>
+                                <div className="control">
+                                    <input
+                                        value={this.state.username}
+                                        type="text"
+                                        name="username"
+                                        onChange={this.handleChange}
+                                        className="input is-medium"
+                                        placeholder="Name"
                                     />
                                 </div>
                             </div>
@@ -107,17 +109,17 @@ class Login extends React.Component {
                             </div>
                         </form>
                         <button
-                            onClick={this.login}
-                            className="button is-primary is-medium login-button"
+                            onClick={this.createNewUser}
+                            className="button is-primary is-medium signup-button"
                         >
-                            Login
+                            Sign Up
                         </button>
                         <div className="is-size-5">
-                            {'Or '}
-                            <Link to={HOME} className="has-text-weight-bold has-text-primary">
-                                {'sign up'}
-                            </Link>
-                            {" if you don't have an account."}
+                            Or{' '}
+                            <Link to={LOGIN} className="has-text-weight-bold has-text-primary">
+                                login
+                            </Link>{' '}
+                            if you already have an account.
                         </div>
                     </div>
                 </div>
@@ -126,17 +128,13 @@ class Login extends React.Component {
     }
 }
 
-Login.defaultProps = {
-    profile: {},
-};
-
-Login.propTypes = {
+SignUp.propTypes = {
     firebase: PropTypes.objectOf(PropTypes.func).isRequired,
-    profile: PropTypes.objectOf(PropTypes.string),
 };
 
-const fbWrapped = firebaseConnect()(Login);
+const fbWrapped = firebaseConnect()(SignUp);
 
-export default connect(({ firebase }) => ({
-    profile: pathToJS(firebase, 'profile'),
+export default connect(state => ({
+    auth: state.firebase.auth,
+    profile: state.firebase.profile,
 }))(fbWrapped);

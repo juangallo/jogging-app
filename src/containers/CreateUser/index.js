@@ -1,41 +1,71 @@
 import React from 'react';
-import { firebaseConnect } from 'react-redux-firebase';
+import { bindActionCreators } from 'redux';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { firebaseConnect, pathToJS } from 'react-redux-firebase';
 import PropTypes from 'prop-types';
 
-import { LOGIN, DASHBOARD } from '../../consts/routes';
+import { createUser, editUser, cleanState } from '../../actions/userActions';
+import { LOGIN, MANAGEMENT } from '../../consts/routes';
 
 import './style.css';
 
 class CreateUser extends React.Component {
     constructor(props) {
         super(props);
+        if (props.match.params.uid) {
+            this.state = {
+                email: props.location.email,
+                username: props.location.username,
+                role: props.location.role,
+                uid: props.match.params.uid,
+            };
+        } else {
+            this.state = {
+                email: '',
+                password: '',
+                username: '',
+                role: 'user',
+            };
+        }
 
-        this.state = {
-            email: '',
-            password: '',
-            username: '',
-            errorMessage: '',
-            accountCreated: false,
-        };
-
+        this.renderAdminOption = this.renderAdminOption.bind(this);
+        this.editUser = this.editUser.bind(this);
         this.createNewUser = this.createNewUser.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.displayErrors = this.displayErrors.bind(this);
         this.redirectUser = this.redirectUser.bind(this);
     }
 
-    createNewUser() {
-        const { email, password, username } = this.state;
+    componentWillMount() {
+        const { profile, history } = this.props;
+        if (!profile || profile.role !== 'admin' || profile.role !== 'manager') {
+            history.push({ LOGIN });
+        }
+    }
 
-        this.props.firebase
-            .createUser({ email, password }, { username, email })
-            .then(userData =>
-                (userData
-                    ? this.setState({ accountCreated: true })
-                    : this.setState({ accountCreated: false })))
-            .catch(error => this.setState({ errorMessage: error.message }));
+    createNewUser() {
+        const {
+            email, password, username, role,
+        } = this.state;
+        this.props.createUser({
+            email,
+            password,
+            username,
+            role,
+        });
+    }
+
+    editUser() {
+        const {
+            email, uid, username, role,
+        } = this.state;
+        this.props.editUser({
+            email,
+            uid,
+            username,
+            role,
+        });
     }
 
     handleChange(event) {
@@ -45,14 +75,25 @@ class CreateUser extends React.Component {
     }
 
     displayErrors() {
-        if (this.state.errorMessage) {
-            return <div className="notification is-danger">{this.state.errorMessage}</div>;
+        if (this.props.errorMessageCreateEdit) {
+            return (
+                <div className="notification is-danger">{this.props.errorMessageCreateEdit}</div>
+            );
         }
     }
 
     redirectUser() {
-        if (this.state.accountCreated) {
-            return <Redirect to={DASHBOARD} />;
+        if (this.props.successCreateEdit) {
+            this.props.cleanState();
+            return <Redirect to={MANAGEMENT} />;
+        }
+    }
+
+    renderAdminOption() {
+        if (!this.props.profile) {
+            return '';
+        } else if (this.props.profile.role === 'admin') {
+            return <option value="admin">Admin</option>;
         }
     }
 
@@ -61,8 +102,7 @@ class CreateUser extends React.Component {
             <div className="create-user hero is-dark is-fullheight">
                 <div className="hero-body">
                     <div className="container has-text-centered">
-                        <h1 className="title is-1">Jogging Time Tracker</h1>
-                        <h2 className="subtitle is-3">Sign up</h2>
+                        <h1 className="title is-1">Create User</h1>
                         <form className="container create-user-form" onSubmit={this.createNewUser}>
                             {this.displayErrors()}
                             {this.redirectUser()}
@@ -92,6 +132,23 @@ class CreateUser extends React.Component {
                                     />
                                 </div>
                             </div>
+                            <div className="field">
+                                <div className="label is-medium">Role:</div>
+                                <div className="control">
+                                    <div className="select is-medium">
+                                        <select
+                                            name="role"
+                                            value={this.state.role}
+                                            onChange={this.handleChange}
+                                            className="select is-medium"
+                                        >
+                                            <option value="user">User</option>
+                                            <option value="manager">Manager</option>
+                                            {this.renderAdminOption()}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div className="field">
                                 <div className="label is-medium">Password:</div>
@@ -108,18 +165,27 @@ class CreateUser extends React.Component {
                                 </div>
                             </div>
                         </form>
-                        <button
-                            onClick={this.createNewUser}
-                            className="button is-primary is-medium signup-button"
-                        >
-                            Sign Up
-                        </button>
-                        <div className="is-size-5">
-                            Or{' '}
-                            <Link to={LOGIN} className="has-text-weight-bold has-text-primary">
-                                login
-                            </Link>{' '}
-                            if you already have an account.
+                        <div>
+                            <Link to={MANAGEMENT} className="has-text-weight-bold has-text-primary">
+                                <button className="button is-danger is-medium cancel-button">
+                                    Cancel
+                                </button>
+                            </Link>
+                            {this.props.match.params.uid ? (
+                                <button
+                                    onClick={this.editUser}
+                                    className="button is-primary is-medium create-user-button"
+                                >
+                                    {this.props.loadingCreateEdit ? 'Loading...' : 'Edit User'}
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={this.createNewUser}
+                                    className="button is-primary is-medium create-user-button"
+                                >
+                                    {this.props.loadingCreateEdit ? 'Loading...' : 'Create User'}
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -129,12 +195,27 @@ class CreateUser extends React.Component {
 }
 
 CreateUser.propTypes = {
-    firebase: PropTypes.objectOf(PropTypes.func).isRequired,
+    createUser: PropTypes.func.isRequired,
+    loadingCreateEdit: PropTypes.bool.isRequired,
+    successCreateEdit: PropTypes.bool.isRequired,
+    errorMessageCreateEdit: PropTypes.string.isRequired,
 };
+
+function mapStateToProps(state) {
+    return {
+        loadingCreateEdit: state.user.loadingCreateEdit,
+        successCreateEdit: state.user.successCreateEdit,
+        errorMessageCreateEdit: state.user.errorMessageCreateEdit,
+    };
+}
+
+const mapDispatchToProps = dispatch =>
+    bindActionCreators({ createUser, editUser, cleanState }, dispatch);
 
 const fbWrapped = firebaseConnect()(CreateUser);
 
-export default connect(state => ({
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
+const connectProfile = connect(({ firebase }) => ({
+    profile: pathToJS(firebase, 'profile'),
 }))(fbWrapped);
+
+export default connect(mapStateToProps, mapDispatchToProps)(connectProfile);

@@ -1,5 +1,6 @@
-import { createStore, compose } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 import { reduxFirebase } from 'react-redux-firebase';
+import thunk from 'redux-thunk';
 import rootReducer from './reducers/rootReducer';
 
 // Replace with your Firebase config
@@ -11,12 +12,13 @@ const fbConfig = {
 
 export default function configureStore(initialState, history) {
     const createStoreWithMiddleware = compose(
+        applyMiddleware(thunk),
         reduxFirebase(fbConfig, {
             userProfile: 'users',
             profileParamsToPopulate: [['role:roles']],
             profileFactory: (userData, profileData) => ({
                 email: userData.email,
-                role: 'user',
+                role: profileData.role || 'user',
                 username: profileData.username,
             }),
         }),
