@@ -28,12 +28,17 @@ class EditRecord extends React.Component {
             };
         } else {
             this.state = {
+                date: moment(),
+                distance: 0,
+                time: '00:00',
+                timeRaw: 0,
                 errorMessage: '',
             };
         }
 
-        this.newRecord = this.newRecord.bind(this);
         this.edit = this.edit.bind(this);
+        this.newRecord = this.newRecord.bind(this);
+        this.validateInput = this.validateInput.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.displayErrors = this.displayErrors.bind(this);
@@ -81,6 +86,25 @@ class EditRecord extends React.Component {
             .then(this.setState({ successfulNewRecord: true, errorMessage: '' }))
             .catch(error =>
                 this.setState({ errorMessage: error.message, successfulNewRecord: false }));
+    }
+
+    validateInput(funcToRun) {
+        const { date, distance, timeRaw } = this.state;
+        if (!date || !moment.isMoment(date)) {
+            this.setState({
+                errorMessage: 'Please input a valid date',
+            });
+        } else if (!distance || isNaN(distance)) {
+            this.setState({
+                errorMessage: 'Please input a valid distance',
+            });
+        } else if (!timeRaw || isNaN(timeRaw)) {
+            this.setState({
+                errorMessage: 'Please input a valid time',
+            });
+        } else {
+            funcToRun();
+        }
     }
 
     displayErrors() {
@@ -160,14 +184,14 @@ class EditRecord extends React.Component {
                         </form>
                         {this.props.match.params.recordId ? (
                             <button
-                                onClick={this.edit}
+                                onClick={() => this.validateInput(this.edit)}
                                 className="button is-primary is-medium login-button"
                             >
                                 Edit
                             </button>
                         ) : (
                             <button
-                                onClick={this.newRecord}
+                                onClick={() => this.validateInput(this.newRecord)}
                                 className="button is-primary is-medium login-button"
                             >
                                 Add new record

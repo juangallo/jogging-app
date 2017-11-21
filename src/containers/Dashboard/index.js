@@ -26,8 +26,8 @@ class Dashboard extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.records !== nextProps.records) {
-            if (nextProps.records) {
-                const { records } = nextProps;
+            const { records } = nextProps;
+            if (records) {
                 const sortedRecords = iterateRecords(records).sort((a, b) => b.date - a.date);
                 const a = moment.unix(sortedRecords[0].date);
                 const b = moment.unix(sortedRecords[sortedRecords.length - 1].date);
