@@ -60,6 +60,15 @@ class Dashboard extends React.Component {
         }
     }
 
+    renderName() {
+        const { location, profile } = this.props;
+        if (location.username) {
+            return location.username;
+        } else if (profile && profile.username) {
+            return profile.username;
+        }
+    }
+
     render() {
         const today = moment.locale('en');
 
@@ -67,6 +76,7 @@ class Dashboard extends React.Component {
             <div className="login hero is-fullheight">
                 <div className="hero-body">
                     <div className="container has-text-centered">
+                        <h1 className="title is-1">{this.renderName()} Dashboard</h1>
                         <h3 className="title is-4">Filter</h3>
                         <DateRangePicker
                             startDate={this.state.startDate}
@@ -80,12 +90,25 @@ class Dashboard extends React.Component {
                         <div className="columns">
                             <div className="column is-half">
                                 <h2 className="title is-3">Records</h2>
-
-                                <Link to={EDIT_RECORD}>
-                                    <button className="add-record-button button is-primary is-medium">
-                                        Add Record
-                                    </button>
-                                </Link>
+                                {this.props.location.uid ? (
+                                    <Link
+                                        push
+                                        to={{
+                                            pathname: EDIT_RECORD,
+                                            uid: this.props.location.uid,
+                                        }}
+                                    >
+                                        <button className="add-record-button button is-primary is-medium">
+                                            Add Record
+                                        </button>
+                                    </Link>
+                                ) : (
+                                    <Link push to={EDIT_RECORD}>
+                                        <button className="add-record-button button is-primary is-medium">
+                                            Add Record
+                                        </button>
+                                    </Link>
+                                )}
 
                                 <TimesTable
                                     records={this.state.records}
@@ -117,18 +140,28 @@ Dashboard.propTypes = {
     records: PropTypes.objectOf(PropTypes.object),
 };
 
-const authConnected = connect(({ firebase }) => ({
+const authConnected = connect(({ firebase }, { match }) => ({
     auth: pathToJS(firebase, 'auth'),
+    match: pathToJS(firebase, 'match'),
 }))(Dashboard);
 
-const fbWrapped = firebaseConnect(({ auth }) => [
-    {
+function query(auth, match) {
+    if (match.params.uid) {
+        return {
+            path: 'records',
+            queryParams: ['orderByChild=user', `equalTo=${match.params.uid}`],
+        };
+    }
+    return {
         path: 'records',
         queryParams: ['orderByChild=user', `equalTo=${auth ? auth.uid : ''}`],
-    },
-])(authConnected);
+    };
+}
+
+const fbWrapped = firebaseConnect(({ auth, match }) => [query(auth, match)])(authConnected);
 
 export default connect(({ firebase }, { auth }) => ({
     records: dataToJS(firebase, 'records'),
+    profile: pathToJS(firebase, 'profile'),
     auth: pathToJS(firebase, 'auth'),
 }))(fbWrapped);

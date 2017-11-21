@@ -18,7 +18,7 @@ export default (
         errorMessageCreateEdit: '',
         loadingDelete: false,
         successDelete: false,
-        errorMessageDelete: false,
+        errorMessageDelete: '',
     },
     action,
 ) => {
@@ -92,6 +92,9 @@ export default (
             loadingCreateEdit: false,
             successCreateEdit: false,
             errorMessageCreateEdit: '',
+            loadingDelete: false,
+            successDelete: false,
+            errorMessageDelete: '',
         };
     default:
         return state;
