@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { firebaseConnect } from 'react-redux-firebase';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { deleteUser } from '../../actions/userActions';
 
 const UsersTable = (props) => {
     const tableRows = props.users.map(user => (
@@ -10,12 +13,19 @@ const UsersTable = (props) => {
             <td>{user.email}</td>
             <td>{user.role}</td>
             <td>
-                <button onClick={() => props.firebase.remove(`users/${user.id}`)}>
-                    <i className="fa fa-trash" />
+                <button onClick={() => props.deleteUser(user.id)}>
+                    {props.loadingDelete ? (
+                        <i className="fa fa-spinner" />
+                    ) : (
+                        <i className="fa fa-trash" />
+                    )}
                 </button>
                 <Link
                     to={{
-                        pathname: `/edit-user/${user.id}`,
+                        pathname: `/create-user/${user.id}`,
+                        username: user.username,
+                        email: user.email,
+                        role: user.role,
                     }}
                 >
                     <button>
@@ -44,4 +54,14 @@ UsersTable.PropTypes = {
     users: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default firebaseConnect()(UsersTable);
+function mapStateToProps(state) {
+    return {
+        loadingDelete: state.user.loadingDelete,
+        successDelete: state.user.successDelete,
+        errorMessageDelete: state.user.errorMessageDelete,
+    };
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators({ deleteUser }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(UsersTable);

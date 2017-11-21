@@ -21,6 +21,7 @@ render(
     <BrowserRouter>
         <Provider store={store}>
             <Switch>
+                <Route path={`${CREATE_USER}/:uid`} component={CreateUser} />
                 <Route path={CREATE_USER} component={CreateUser} />
                 <Route path={`${EDIT_RECORD}/:recordId`} component={EditRecord} />
                 <Route path={EDIT_RECORD} component={EditRecord} />

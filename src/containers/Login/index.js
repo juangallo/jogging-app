@@ -4,7 +4,7 @@ import { firebaseConnect, pathToJS } from 'react-redux-firebase';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { DASHBOARD, CREATE_USER, MANAGEMENT } from '../../consts/routes';
+import { DASHBOARD, HOME, MANAGEMENT } from '../../consts/routes';
 
 import './style.css';
 
@@ -56,6 +56,7 @@ class Login extends React.Component {
         if (this.state.successfulLogin && this.props.profile) {
             switch (this.props.profile.role) {
             case 'manager':
+            case 'admin':
                 return <Redirect push to={MANAGEMENT} />;
             case 'user':
                 return <Redirect push to={DASHBOARD} />;
@@ -113,10 +114,7 @@ class Login extends React.Component {
                         </button>
                         <div className="is-size-5">
                             {'Or '}
-                            <Link
-                                to={CREATE_USER}
-                                className="has-text-weight-bold has-text-primary"
-                            >
+                            <Link to={HOME} className="has-text-weight-bold has-text-primary">
                                 {'sign up'}
                             </Link>
                             {" if you don't have an account."}
