@@ -194,11 +194,19 @@ class CreateUser extends React.Component {
     }
 }
 
+const {
+    func, bool, string, objectOf,
+} = PropTypes;
 CreateUser.propTypes = {
-    createUser: PropTypes.func.isRequired,
-    loadingCreateEdit: PropTypes.bool.isRequired,
-    successCreateEdit: PropTypes.bool.isRequired,
-    errorMessageCreateEdit: PropTypes.string.isRequired,
+    /* eslint-disable react/no-typos */
+    createUser: func.isRequired,
+    loadingCreateEdit: bool.isRequired,
+    successCreateEdit: bool.isRequired,
+    errorMessageCreateEdit: string.isRequired,
+    profile: objectOf(string).isRequired,
+    editUser: func.isRequired,
+    cleanState: func.isRequired,
+    role: string.isRequired,
 };
 
 function mapStateToProps(state) {

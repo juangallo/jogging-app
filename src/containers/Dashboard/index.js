@@ -7,10 +7,11 @@ import { DateRangePicker, isInclusivelyAfterDay } from 'react-dates';
 import moment from 'moment';
 import { filter } from 'lodash';
 import { iterateRecords } from '../../utils';
+import Header from '../Header';
 import TimesTable from '../../components/TimesTable';
-import Report from '../../containers/Report';
+import Report from '../Report';
 
-import { EDIT_RECORD } from '../../consts/routes';
+import { EDIT_RECORD, DASHBOARD, MANAGEMENT } from '../../consts/routes';
 
 import './style.css';
 
@@ -71,9 +72,17 @@ class Dashboard extends React.Component {
 
     render() {
         const today = moment.locale('en');
+        let navigation = [DASHBOARD, 'logout'];
+        if (this.props.profile) {
+            const { role } = this.props.profile;
+            if (role === 'admin' || role === 'manager') {
+                navigation = [DASHBOARD, MANAGEMENT, 'logout'];
+            }
+        }
 
         return (
             <div className="login hero is-fullheight">
+                <Header navigation={navigation} current={DASHBOARD} />
                 <div className="hero-body">
                     <div className="container has-text-centered">
                         <h1 className="title is-1">{this.renderName()} Dashboard</h1>
