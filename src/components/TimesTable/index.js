@@ -35,9 +35,13 @@ const TimesTable = (props) => {
             </table>
         );
     } else if (props.recordsLoaded) {
-        return <div>No records yet!</div>;
+        return <div id="no-records">No records yet!</div>;
     }
-    return <div className="notification is-warning">Loading records...</div>;
+    return (
+        <div className="notification is-warning" id="loading">
+            Loading records...
+        </div>
+    );
 };
 
 TimesTable.defaultProps = {

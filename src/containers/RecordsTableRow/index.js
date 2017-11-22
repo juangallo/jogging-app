@@ -25,7 +25,6 @@ const TableRow = props => (
                 <i className="fa fa-trash" />
             </button>
             <Link
-                push
                 to={{
                     pathname: `${EDIT_RECORD}/${props.id}`,
                     date: props.date,

@@ -10,7 +10,7 @@ import { LOGIN, MANAGEMENT } from '../../consts/routes';
 
 import './style.css';
 
-class CreateUser extends React.Component {
+export class CreateUser extends React.Component {
     constructor(props) {
         super(props);
         if (props.match.params.uid) {
@@ -77,7 +77,9 @@ class CreateUser extends React.Component {
     displayErrors() {
         if (this.props.errorMessageCreateEdit) {
             return (
-                <div className="notification is-danger">{this.props.errorMessageCreateEdit}</div>
+                <div id="error" className="notification is-danger">
+                    {this.props.errorMessageCreateEdit}
+                </div>
             );
         }
     }
@@ -85,7 +87,7 @@ class CreateUser extends React.Component {
     redirectUser() {
         if (this.props.successCreateEdit) {
             this.props.cleanState();
-            return <Redirect to={MANAGEMENT} />;
+            return <Redirect to={MANAGEMENT} id="redirect" />;
         }
     }
 

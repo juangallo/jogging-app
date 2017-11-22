@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { connect } from 'react-redux';
 import { firebaseConnect, dataToJS, pathToJS } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
@@ -7,15 +8,21 @@ import { DateRangePicker, isInclusivelyAfterDay } from 'react-dates';
 import moment from 'moment';
 import { filter } from 'lodash';
 import { iterateRecords } from '../../utils';
+<<<<<<< HEAD
 import Header from '../Header';
 import TimesTable from '../../components/TimesTable';
 import Report from '../Report';
+=======
+
+import TimesTable from '../../components/TimesTable';
+import Report from '../../components/Report';
+>>>>>>> adceb9c... Unit tests and a small bugfix
 
 import { EDIT_RECORD, DASHBOARD, MANAGEMENT } from '../../consts/routes';
 
 import './style.css';
 
-class Dashboard extends React.Component {
+export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
 
@@ -106,13 +113,14 @@ class Dashboard extends React.Component {
                                             pathname: EDIT_RECORD,
                                             uid: this.props.location.uid,
                                         }}
+                                        id="edit-record-uid"
                                     >
                                         <button className="add-record-button button is-primary is-medium">
                                             Add Record
                                         </button>
                                     </Link>
                                 ) : (
-                                    <Link push to={EDIT_RECORD}>
+                                    <Link to={EDIT_RECORD} id="edit-record">
                                         <button className="add-record-button button is-primary is-medium">
                                             Add Record
                                         </button>
@@ -128,9 +136,13 @@ class Dashboard extends React.Component {
                             <div className="column is-half">
                                 <h2 className="title is-3">Weekly Report</h2>
                                 {this.state.recordsLoaded ? (
-                                    <Report records={this.state.records} weeks={this.state.weeks} />
+                                    <Report
+                                        records={this.state.records}
+                                        weeks={this.state.weeks}
+                                        endDate={this.state.endDate}
+                                    />
                                 ) : (
-                                    <div>Loading...</div>
+                                    <div id="loading-report">Loading...</div>
                                 )}
                             </div>
                         </div>
@@ -147,6 +159,7 @@ Dashboard.defaultProps = {
 
 Dashboard.propTypes = {
     records: PropTypes.objectOf(PropTypes.object),
+    location: ReactRouterPropTypes.location.isRequired,
 };
 
 const authConnected = connect(({ firebase }, { match }) => ({
