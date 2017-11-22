@@ -26,6 +26,7 @@ render(
                 <Route path={`${EDIT_RECORD}/:recordId`} component={EditRecord} />
                 <Route path={EDIT_RECORD} component={EditRecord} />
                 <Route path={MANAGEMENT} component={Manager} />
+                <Route path={`${DASHBOARD}/:uid`} component={Dashboard} />
                 <Route path={DASHBOARD} component={Dashboard} />
                 <Route path={LOGIN} component={Login} />
                 <Route path={HOME} component={SignUp} />

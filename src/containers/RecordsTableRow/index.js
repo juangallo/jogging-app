@@ -5,6 +5,8 @@ import { firebaseConnect } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
 
+import { EDIT_RECORD } from '../../consts/routes';
+
 import { convertToKmH } from '../../utils';
 
 const TableRow = props => (
@@ -23,8 +25,9 @@ const TableRow = props => (
                 <i className="fa fa-trash" />
             </button>
             <Link
+                push
                 to={{
-                    pathname: `/edit-record/${props.id}`,
+                    pathname: `${EDIT_RECORD}/${props.id}`,
                     date: props.date,
                     distance: props.distance,
                     time: moment()
@@ -32,6 +35,7 @@ const TableRow = props => (
                         .seconds(props.time)
                         .format('HH:mm'),
                     timeRaw: props.time,
+                    uid: props.user,
                 }}
             >
                 <button>

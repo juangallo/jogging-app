@@ -36,6 +36,7 @@ class EditRecord extends React.Component {
             };
         }
 
+        this.getRequestObject = this.getRequestObject.bind(this);
         this.edit = this.edit.bind(this);
         this.newRecord = this.newRecord.bind(this);
         this.validateInput = this.validateInput.bind(this);
@@ -44,12 +45,28 @@ class EditRecord extends React.Component {
         this.displayErrors = this.displayErrors.bind(this);
     }
 
+    getRequestObject() {
+        const dateInUnix = moment(this.state.date).unix();
+        if (this.props.location.uid) {
+            return {
+                date: dateInUnix,
+                distance: this.state.distance,
+                time: this.state.timeRaw,
+                user: this.props.location.uid,
+            };
+        }
+        return {
+            date: dateInUnix,
+            distance: this.state.distance,
+            time: this.state.timeRaw,
+            user: this.props.auth.uid,
+        };
+    }
     handleChange(event) {
         this.setState({
             [event.target.name]: event.target.valueAsNumber,
         });
     }
-
     handleTimeChange(event) {
         const timeArray = event.target.value.split(':');
         const seconds = timeArray[0] * 3600 + timeArray[1] * 60;
@@ -58,31 +75,16 @@ class EditRecord extends React.Component {
             timeRaw: seconds,
         });
     }
-
     edit() {
-        const dateInUnix = moment(this.state.date).unix();
-
         this.props.firebase
-            .update(`records/${this.props.match.params.recordId}`, {
-                date: dateInUnix,
-                distance: this.state.distance,
-                time: this.state.timeRaw,
-                user: this.props.auth.uid,
-            })
+            .update(`records/${this.props.match.params.recordId}`, this.getRequestObject())
             .then(this.setState({ successfulEdit: true, errorMessage: '' }))
             .catch(error => this.setState({ errorMessage: error.message, successfulEdit: false }));
     }
 
     newRecord() {
-        const dateInUnix = moment(this.state.date).unix();
-
         this.props.firebase
-            .push('records', {
-                date: dateInUnix,
-                distance: this.state.distance,
-                time: this.state.timeRaw,
-                user: this.props.auth.uid,
-            })
+            .push('records', this.getRequestObject())
             .then(this.setState({ successfulNewRecord: true, errorMessage: '' }))
             .catch(error =>
                 this.setState({ errorMessage: error.message, successfulNewRecord: false }));
@@ -115,6 +117,17 @@ class EditRecord extends React.Component {
 
     redirectOnSuccess() {
         if (this.state.successfulEdit || this.state.successfulNewRecord) {
+            if (this.props.location.uid) {
+                return (
+                    <Redirect
+                        push
+                        to={{
+                            pathname: `${DASHBOARD}/${this.props.location.uid}`,
+                            uid: this.props.location.uid,
+                        }}
+                    />
+                );
+            }
             return <Redirect push to={DASHBOARD} />;
         }
     }

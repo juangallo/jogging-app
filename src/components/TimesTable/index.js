@@ -15,6 +15,7 @@ const TimesTable = (props) => {
                 distance={record.distance}
                 time={record.time}
                 speed={record.distance / record.time}
+                user={record.user}
             />
         ));
         return (

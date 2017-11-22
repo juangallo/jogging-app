@@ -13,13 +13,14 @@ import UsersTable from '../UsersTable';
 class Management extends Component {
     renderTable() {
         let users = iterateRecords(this.props.users);
-        if (this.props.profile.role === 'manager') {
+        const { profile } = this.props;
+        if (profile.role === 'manager') {
             users = filter(users, o => o.role === 'manager' || o.role === 'user');
-        } else if (this.props.profile.role !== 'admin') {
+        } else if (profile.role !== 'admin') {
             return <Redirect to={HOME} />;
         }
         if (users && users.length > 0) {
-            return <UsersTable users={users} />;
+            return <UsersTable users={users} role={profile.role} />;
         } else if (isLoaded(this.props.users)) {
             return <div>No records yet!</div>;
         }
@@ -33,7 +34,7 @@ class Management extends Component {
                     <div className="container has-text-centered">
                         <div className="title is-1">Management</div>
                         <div>
-                            <Link to={CREATE_USER}>
+                            <Link push to={CREATE_USER}>
                                 <button className="add-record-button button is-primary is-medium">
                                     Add User
                                 </button>
