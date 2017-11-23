@@ -1,7 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import configureStore from 'redux-mock-store';
-import { createUser, editUser, cleanState } from '../../actions/userActions';
+import { shallow } from 'enzyme';
 
 import { EditRecord } from './';
 

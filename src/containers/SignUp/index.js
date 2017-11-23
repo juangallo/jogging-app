@@ -8,7 +8,7 @@ import { LOGIN, DASHBOARD } from '../../consts/routes';
 
 import './style.css';
 
-class SignUp extends React.Component {
+export class SignUp extends React.Component {
     constructor(props) {
         super(props);
 
@@ -46,13 +46,17 @@ class SignUp extends React.Component {
 
     displayErrors() {
         if (this.state.errorMessage) {
-            return <div className="notification is-danger">{this.state.errorMessage}</div>;
+            return (
+                <div className="notification is-danger" id="error">
+                    {this.state.errorMessage}
+                </div>
+            );
         }
     }
 
     redirectUser() {
         if (this.state.accountCreated) {
-            return <Redirect to={DASHBOARD} />;
+            return <Redirect to={DASHBOARD} id="redirect" />;
         }
     }
 

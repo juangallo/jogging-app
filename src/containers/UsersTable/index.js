@@ -73,10 +73,6 @@ class UsersTable extends Component {
     }
 }
 
-UsersTable.PropTypes = {
-    users: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
-
 function mapStateToProps(state) {
     return {
         loadingDelete: state.user.loadingDelete,

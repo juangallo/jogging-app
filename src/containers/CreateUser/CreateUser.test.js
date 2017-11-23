@@ -1,7 +1,6 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import configureStore from 'redux-mock-store';
-import { createUser, editUser, cleanState } from '../../actions/userActions';
+import { shallow } from 'enzyme';
+import { createUser, cleanState } from '../../actions/userActions';
 
 import { CreateUser } from './';
 
@@ -30,11 +29,14 @@ describe('CreateUser', () => {
             history: {
                 push: jest.fn(),
             },
+            profile: {},
+            editUser: jest.fn(),
+            role: '',
         };
         mountedCreateUser = undefined;
     });
 
-    it('should always renders a div', () => {
+    it('should always render a div', () => {
         expect(createUserWrapper()
             .find('div')
             .exists()).toBe(true);

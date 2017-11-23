@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { firebaseConnect } from 'react-redux-firebase';
 import { Link, Redirect } from 'react-router-dom';
 
 import { DASHBOARD, HOME, MANAGEMENT } from '../../consts/routes';
 
-class Header extends Component {
+export class Header extends Component {
     constructor(props) {
         super(props);
 
@@ -23,7 +24,7 @@ class Header extends Component {
 
     redirect() {
         if (this.state.loggedOut) {
-            return <Redirect to={HOME} />;
+            return <Redirect to={HOME} id="redirectOnLogout" />;
         }
     }
 
@@ -32,7 +33,7 @@ class Header extends Component {
         const nav = navigation.map((item) => {
             if (item === 'logout') {
                 return (
-                    <a key={item} className="navbar-item is-danger" onClick={this.logout}>
+                    <a key={item} className="navbar-item nav-item is-danger" onClick={this.logout}>
                         Logout
                     </a>
                 );
@@ -41,7 +42,7 @@ class Header extends Component {
                     <Link
                         key={item}
                         to={item}
-                        className={`navbar-item ${item === current ? 'is-active' : ''}`}
+                        className={`navbar-item nav-item ${item === current ? 'is-active' : ''}`}
                     >
                         Dashboard
                     </Link>
@@ -51,7 +52,7 @@ class Header extends Component {
                     <Link
                         key={item}
                         to={item}
-                        className={`navbar-item ${item === current ? 'is-active' : ''}`}
+                        className={`navbar-item nav-item ${item === current ? 'is-active' : ''}`}
                     >
                         Management
                     </Link>
@@ -81,5 +82,15 @@ class Header extends Component {
         );
     }
 }
+
+const {
+    objectOf, func, arrayOf, string,
+} = PropTypes;
+Header.propTypes = {
+    /* eslint-disable react/no-typos */
+    firebase: objectOf(func).isRequired,
+    navigation: arrayOf(string).isRequired,
+    current: string.isRequired,
+};
 
 export default firebaseConnect()(Header);

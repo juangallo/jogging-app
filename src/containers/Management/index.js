@@ -11,21 +11,25 @@ import { HOME, CREATE_USER, DASHBOARD, MANAGEMENT } from '../../consts/routes';
 import Header from '../Header';
 import UsersTable from '../UsersTable';
 
-class Management extends Component {
+export class Management extends Component {
     renderTable() {
         let users = iterateRecords(this.props.users);
         const { profile } = this.props;
         if (profile.role === 'manager') {
             users = filter(users, o => o.role === 'manager' || o.role === 'user');
         } else if (profile.role !== 'admin') {
-            return <Redirect to={HOME} />;
+            return <Redirect to={HOME} id="redirect-bad-role" />;
         }
         if (users && users.length > 0) {
-            return <UsersTable users={users} role={profile.role} />;
+            return <UsersTable users={users} role={profile.role} id="UsersTable" />;
         } else if (isLoaded(this.props.users)) {
-            return <div>No records yet!</div>;
+            return <div id="no-users">No users yet!</div>;
         }
-        return <div className="notification is-warning">Loading users...</div>;
+        return (
+            <div className="notification is-warning" id="loading-users">
+                Loading users...
+            </div>
+        );
     }
 
     render() {
@@ -57,9 +61,10 @@ Management.defaultProps = {
     profile: {},
 };
 
+const { objectOf, object, string } = PropTypes;
 Management.propTypes = {
-    users: PropTypes.objectOf(PropTypes.object),
-    profile: PropTypes.objectOf(PropTypes.string),
+    users: objectOf(object),
+    profile: objectOf(string),
 };
 
 const authConnected = connect(({ firebase }) => ({

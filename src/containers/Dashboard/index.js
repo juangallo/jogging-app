@@ -8,15 +8,9 @@ import { DateRangePicker, isInclusivelyAfterDay } from 'react-dates';
 import moment from 'moment';
 import { filter } from 'lodash';
 import { iterateRecords } from '../../utils';
-<<<<<<< HEAD
 import Header from '../Header';
 import TimesTable from '../../components/TimesTable';
-import Report from '../Report';
-=======
-
-import TimesTable from '../../components/TimesTable';
 import Report from '../../components/Report';
->>>>>>> adceb9c... Unit tests and a small bugfix
 
 import { EDIT_RECORD, DASHBOARD, MANAGEMENT } from '../../consts/routes';
 
@@ -157,9 +151,12 @@ Dashboard.defaultProps = {
     records: undefined,
 };
 
+const { objectOf, object } = PropTypes;
+const { location } = ReactRouterPropTypes;
 Dashboard.propTypes = {
-    records: PropTypes.objectOf(PropTypes.object),
-    location: ReactRouterPropTypes.location.isRequired,
+    /* eslint-disable react/no-typos */
+    records: objectOf(object),
+    location: location.isRequired,
 };
 
 const authConnected = connect(({ firebase }, { match }) => ({
