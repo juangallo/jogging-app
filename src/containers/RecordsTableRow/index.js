@@ -9,7 +9,7 @@ import { EDIT_RECORD } from '../../consts/routes';
 
 import { convertToKmH } from '../../utils';
 
-const TableRow = props => (
+export const RecordsTableRow = props => (
     <tr>
         <th>{moment.unix(props.date).format('MM/DD/YY')}</th>
         <td>{(props.distance / 1000).toFixed(2)} km</td>
@@ -45,7 +45,7 @@ const TableRow = props => (
     </tr>
 );
 
-TableRow.propTypes = {
+RecordsTableRow.propTypes = {
     id: PropTypes.string.isRequired,
     date: PropTypes.number.isRequired,
     distance: PropTypes.number.isRequired,
@@ -54,4 +54,4 @@ TableRow.propTypes = {
     firebase: PropTypes.objectOf(PropTypes.func).isRequired,
 };
 
-export default firebaseConnect()(TableRow);
+export default firebaseConnect()(RecordsTableRow);
