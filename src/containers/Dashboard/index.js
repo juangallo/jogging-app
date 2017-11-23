@@ -65,9 +65,9 @@ export class Dashboard extends React.Component {
     renderName() {
         const { location, profile } = this.props;
         if (location.username) {
-            return location.username;
+            return `${location.username}‘s`;
         } else if (profile && profile.username) {
-            return profile.username;
+            return `${profile.username}‘s`;
         }
     }
 
