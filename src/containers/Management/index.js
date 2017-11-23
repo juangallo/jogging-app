@@ -6,8 +6,9 @@ import { Link, Redirect } from 'react-router-dom';
 import { filter } from 'lodash';
 import { iterateRecords } from '../../utils';
 
-import { HOME, CREATE_USER } from '../../consts/routes';
+import { HOME, CREATE_USER, DASHBOARD, MANAGEMENT } from '../../consts/routes';
 
+import Header from '../Header';
 import UsersTable from '../UsersTable';
 
 class Management extends Component {
@@ -28,8 +29,11 @@ class Management extends Component {
     }
 
     render() {
+        const navigation = [DASHBOARD, MANAGEMENT, 'logout'];
+
         return (
             <div className="login hero is-fullheight">
+                <Header navigation={navigation} current={MANAGEMENT} />
                 <div className="hero-body">
                     <div className="container has-text-centered">
                         <div className="title is-1">Management</div>
