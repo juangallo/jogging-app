@@ -71,7 +71,8 @@ export function getWeeklyAvgArr(records, resultsType, amount, endDate) {
     for (let i = 0; i < amount; i++) {
         let auxDate = moment().subtract(i, 'week');
         if (endDate) {
-            auxDate = endDate.subtract(i, 'week');
+            const endDateClone = endDate.clone();
+            auxDate = endDateClone.subtract(i, 'week');
         }
         results = [getWeekAvg(records, auxDate, resultsType), ...results];
     }
@@ -84,10 +85,11 @@ export function getWeekDates(amount, endDate) {
     for (let i = 0; i < amount; i++) {
         let auxDate = moment().subtract(i, 'week');
         if (endDate) {
-            auxDate = endDate.subtract(i, 'week');
+            const endDateClone = endDate.clone();
+            auxDate = endDateClone.subtract(i, 'week');
         }
         const str = `${auxDate.startOf('isoweek').format('MM/DD')} - ${auxDate
-            .endOf('isoweek')
+            .endOf('week')
             .format('MM/DD')}`;
         labels = [str, ...labels];
     }

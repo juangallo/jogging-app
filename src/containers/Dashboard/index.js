@@ -50,10 +50,10 @@ export class Dashboard extends React.Component {
 
     onDatesChange(startDate, endDate) {
         this.setState({ startDate, endDate });
+        if (endDate) this.setState({ endDateClone: endDate.clone() });
         if (startDate && endDate) {
-            this.setState({ weeks: endDate.diff(startDate, 'weeks') + 1 });
-
             this.setState({
+                weeks: endDate.diff(startDate, 'weeks') + 1,
                 records: filter(
                     this.props.records,
                     record => record.date >= startDate.unix() && endDate.unix() > record.date,
@@ -131,9 +131,9 @@ export class Dashboard extends React.Component {
                                 <h2 className="title is-3">Weekly Report</h2>
                                 {this.state.recordsLoaded ? (
                                     <Report
+                                        endDate={this.state.endDateClone}
                                         records={this.state.records}
                                         weeks={this.state.weeks}
-                                        endDate={this.state.endDate}
                                     />
                                 ) : (
                                     <div id="loading-report">Loading...</div>
