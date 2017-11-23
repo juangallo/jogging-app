@@ -8,7 +8,7 @@ import { deleteUser, cleanState } from '../../actions/userActions';
 
 import { DASHBOARD, MANAGE_USER } from '../../consts/routes';
 
-class UsersTable extends Component {
+export class UsersTable extends Component {
     componentWillUnmount() {
         this.props.cleanState();
     }
@@ -19,7 +19,6 @@ class UsersTable extends Component {
                 <th>
                     {this.props.role === 'admin' ? (
                         <Link
-                            push
                             to={{
                                 pathname: `${DASHBOARD}/${user.id}`,
                                 uid: user.id,
@@ -54,6 +53,21 @@ class UsersTable extends Component {
                             <i className="fa fa-edit" />
                         </button>
                     </Link>
+                    {this.props.role === 'admin' ? (
+                        <Link
+                            to={{
+                                pathname: `${DASHBOARD}/${user.id}`,
+                                uid: user.id,
+                                username: user.username,
+                            }}
+                        >
+                            <button>
+                                <i className="fa fa-tachometer" />
+                            </button>
+                        </Link>
+                    ) : (
+                        ''
+                    )}
                 </td>
             </tr>
         ));
@@ -72,6 +86,18 @@ class UsersTable extends Component {
         );
     }
 }
+
+const {
+    func, arrayOf, object, string, bool,
+} = PropTypes;
+UsersTable.propTypes = {
+    /* eslint-disable react/no-typos */
+    cleanState: func.isRequired,
+    users: arrayOf(object).isRequired,
+    role: string.isRequired,
+    loadingDelete: bool.isRequired,
+    deleteUser: func.isRequired,
+};
 
 function mapStateToProps(state) {
     return {
