@@ -5,7 +5,7 @@ import { firebaseConnect } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
 
-import { EDIT_RECORD } from '../../consts/routes';
+import { MANAGE_RECORD } from '../../consts/routes';
 
 import { convertToKmH } from '../../utils';
 
@@ -31,7 +31,7 @@ export const RecordsTableRow = props => (
             </button>
             <Link
                 to={{
-                    pathname: `${EDIT_RECORD}/${props.id}`,
+                    pathname: `${MANAGE_RECORD}/${props.id}`,
                     date: props.date,
                     distance: props.distance,
                     time: `${getHours(props.time)}:${getMinutes(props.time)}}`,

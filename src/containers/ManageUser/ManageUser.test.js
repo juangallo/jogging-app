@@ -2,16 +2,16 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { createUser, cleanState } from '../../actions/userActions';
 
-import { CreateUser } from './';
+import { ManageUser } from './';
 
-describe('CreateUser', () => {
+describe('ManageUser', () => {
     let props;
-    let mountedCreateUser;
-    const createUserWrapper = () => {
-        if (!mountedCreateUser) {
-            mountedCreateUser = shallow(<CreateUser {...props} />);
+    let mountedManageUser;
+    const manageUserWrapper = () => {
+        if (!mountedManageUser) {
+            mountedManageUser = shallow(<ManageUser {...props} />);
         }
-        return mountedCreateUser;
+        return mountedManageUser;
     };
 
     beforeEach(() => {
@@ -33,25 +33,25 @@ describe('CreateUser', () => {
             editUser: jest.fn(),
             role: '',
         };
-        mountedCreateUser = undefined;
+        mountedManageUser = undefined;
     });
 
     it('should always render a div', () => {
-        expect(createUserWrapper()
+        expect(manageUserWrapper()
             .find('div')
             .exists()).toBe(true);
     });
 
     it('should display errors if there are any', () => {
         props.errorMessageCreateEdit = 'Error message';
-        expect(createUserWrapper()
+        expect(manageUserWrapper()
             .find('#error')
             .exists()).toBe(true);
     });
 
     it('should redirect the user when the account is succesfully created', () => {
         props.successCreateEdit = true;
-        expect(createUserWrapper()
+        expect(manageUserWrapper()
             .find('#redirect')
             .exists()).toBe(true);
     });
