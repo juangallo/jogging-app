@@ -16,7 +16,7 @@ const Report = (props) => {
             {
                 label: 'Avg. Speed (km/h)',
                 data: getWeeklyAvgArr(props.records, 'speeds', props.weeks, props.endDate),
-                borderColor: 'rgba(2, 200, 2)',
+                borderColor: 'rgba(2, 200, 2,1)',
                 borderWidth: 3,
             },
         ],
@@ -25,9 +25,11 @@ const Report = (props) => {
     return <Line data={data} redraw />;
 };
 
+const { arrayOf, object, number } = PropTypes;
 Report.propTypes = {
-    records: PropTypes.arrayOf(PropTypes.object).isRequired,
-    weeks: PropTypes.number.isRequired,
+    records: arrayOf(object).isRequired,
+    weeks: number.isRequired,
+    endDate: object,
 };
 
 export default Report;
