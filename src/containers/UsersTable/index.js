@@ -36,7 +36,7 @@ class UsersTable extends Component {
                 <td>{user.role}</td>
                 <td>
                     <button onClick={() => this.props.deleteUser(user.id)}>
-                        {this.props.loadingDelete ? (
+                        {this.props.loadingDelete === user.id ? (
                             <i className="fa fa-spinner" />
                         ) : (
                             <i className="fa fa-trash" />

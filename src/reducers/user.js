@@ -68,7 +68,7 @@ export default (
     case DELETE_USER_REQUEST:
         return {
             ...state,
-            loadingDelete: true,
+            loadingDelete: action.payload,
             successDelete: false,
             errorMessageDelete: '',
         };
