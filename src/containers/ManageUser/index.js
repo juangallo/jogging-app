@@ -76,9 +76,9 @@ export class ManageUser extends React.Component {
         });
     }
 
-    handleCheckboxChange(event) {
+    handleCheckboxChange() {
         this.setState({
-            changePassword: event.target.checked,
+            changePassword: !this.state.changePassword,
         });
     }
 
@@ -113,7 +113,6 @@ export class ManageUser extends React.Component {
                 <div className="hero-body">
                     <div className="container has-text-centered">
                         <h1 className="title is-1">
-                            {' '}
                             {this.props.match.params.uid ? 'Edit User' : 'Create User'}
                         </h1>
                         <form className="container create-user-form" onSubmit={this.createNewUser}>
@@ -166,15 +165,22 @@ export class ManageUser extends React.Component {
                             <div className="field">
                                 <div className="label is-medium">Password:</div>
                                 <div className="control">
-                                    <label className="checkbox" htmlFor="checkbox">
-                                        <input
-                                            type="checkbox"
+                                    {this.props.match.params.uid ? (
+                                        <label
                                             className="checkbox"
-                                            checked={this.state.changePassword}
-                                            onChange={this.handleCheckboxChange}
-                                        />
-                                        Change password?
-                                    </label>
+                                            htmlFor="checkbox"
+                                            onClick={this.handleCheckboxChange}
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                className="checkbox"
+                                                checked={this.state.changePassword}
+                                            />
+                                            Change password?
+                                        </label>
+                                    ) : (
+                                        ''
+                                    )}
                                     {this.props.match.params.uid && !this.state.changePassword ? (
                                         <input
                                             disabled
