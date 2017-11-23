@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { deleteUser, cleanState } from '../../actions/userActions';
 
-import { DASHBOARD } from '../../consts/routes';
+import { DASHBOARD, MANAGE_USER } from '../../consts/routes';
 
 class UsersTable extends Component {
     componentWillUnmount() {
@@ -44,7 +44,7 @@ class UsersTable extends Component {
                     </button>
                     <Link
                         to={{
-                            pathname: `/create-user/${user.id}`,
+                            pathname: `${MANAGE_USER}/${user.id}`,
                             username: user.username,
                             email: user.email,
                             role: user.role,

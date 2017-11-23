@@ -6,7 +6,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { filter } from 'lodash';
 import { iterateRecords } from '../../utils';
 
-import { HOME, CREATE_USER, DASHBOARD, MANAGEMENT } from '../../consts/routes';
+import { HOME, MANAGE_USER, DASHBOARD, MANAGEMENT } from '../../consts/routes';
 
 import Header from '../Header';
 import UsersTable from '../UsersTable';
@@ -42,7 +42,7 @@ export class Management extends Component {
                     <div className="container has-text-centered">
                         <div className="title is-1">Management</div>
                         <div>
-                            <Link to={CREATE_USER}>
+                            <Link to={MANAGE_USER}>
                                 <button className="add-record-button button is-primary is-medium">
                                     Add User
                                 </button>

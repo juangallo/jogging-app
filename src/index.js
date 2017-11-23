@@ -6,9 +6,9 @@ import './bulma.css';
 
 import configureStore from './store';
 
-import { CREATE_USER, EDIT_RECORD, MANAGEMENT, DASHBOARD, LOGIN, HOME } from './consts/routes';
+import { MANAGE_USER, MANAGE_RECORD, MANAGEMENT, DASHBOARD, LOGIN, HOME } from './consts/routes';
 
-import CreateUser from './containers/CreateUser';
+import ManageUser from './containers/ManageUser';
 import EditRecord from './containers/EditRecord';
 import Manager from './containers/Management';
 import Dashboard from './containers/Dashboard';
@@ -21,10 +21,10 @@ render(
     <BrowserRouter>
         <Provider store={store}>
             <Switch>
-                <Route path={`${CREATE_USER}/:uid`} component={CreateUser} />
-                <Route path={CREATE_USER} component={CreateUser} />
-                <Route path={`${EDIT_RECORD}/:recordId`} component={EditRecord} />
-                <Route path={EDIT_RECORD} component={EditRecord} />
+                <Route path={`${MANAGE_USER}/:uid`} component={ManageUser} />
+                <Route path={MANAGE_USER} component={ManageUser} />
+                <Route path={`${MANAGE_RECORD}/:recordId`} component={EditRecord} />
+                <Route path={MANAGE_RECORD} component={EditRecord} />
                 <Route path={MANAGEMENT} component={Manager} />
                 <Route path={`${DASHBOARD}/:uid`} component={Dashboard} />
                 <Route path={DASHBOARD} component={Dashboard} />

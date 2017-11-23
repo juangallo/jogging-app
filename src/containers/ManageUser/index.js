@@ -10,7 +10,7 @@ import { LOGIN, MANAGEMENT } from '../../consts/routes';
 
 import './style.css';
 
-export class CreateUser extends React.Component {
+export class ManageUser extends React.Component {
     constructor(props) {
         super(props);
         if (props.match.params.uid) {
@@ -19,6 +19,7 @@ export class CreateUser extends React.Component {
                 username: props.location.username,
                 role: props.location.role,
                 uid: props.match.params.uid,
+                changePassword: false,
             };
         } else {
             this.state = {
@@ -32,6 +33,7 @@ export class CreateUser extends React.Component {
         this.renderAdminOption = this.renderAdminOption.bind(this);
         this.editUser = this.editUser.bind(this);
         this.createNewUser = this.createNewUser.bind(this);
+        this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.displayErrors = this.displayErrors.bind(this);
         this.redirectUser = this.redirectUser.bind(this);
@@ -74,6 +76,12 @@ export class CreateUser extends React.Component {
         });
     }
 
+    handleCheckboxChange(event) {
+        this.setState({
+            changePassword: event.target.checked,
+        });
+    }
+
     displayErrors() {
         if (this.props.errorMessageCreateEdit) {
             return (
@@ -104,7 +112,10 @@ export class CreateUser extends React.Component {
             <div className="create-user hero is-dark is-fullheight">
                 <div className="hero-body">
                     <div className="container has-text-centered">
-                        <h1 className="title is-1">Create User</h1>
+                        <h1 className="title is-1">
+                            {' '}
+                            {this.props.match.params.uid ? 'Edit User' : 'Create User'}
+                        </h1>
                         <form className="container create-user-form" onSubmit={this.createNewUser}>
                             {this.displayErrors()}
                             {this.redirectUser()}
@@ -155,15 +166,37 @@ export class CreateUser extends React.Component {
                             <div className="field">
                                 <div className="label is-medium">Password:</div>
                                 <div className="control">
-                                    <input
-                                        value={this.state.password}
-                                        type="password"
-                                        name="password"
-                                        id="password"
-                                        onChange={this.handleChange}
-                                        className="input is-medium"
-                                        placeholder="password"
-                                    />
+                                    <label className="checkbox" htmlFor="checkbox">
+                                        <input
+                                            type="checkbox"
+                                            className="checkbox"
+                                            checked={this.state.changePassword}
+                                            onChange={this.handleCheckboxChange}
+                                        />
+                                        Change password?
+                                    </label>
+                                    {this.props.match.params.uid && !this.state.changePassword ? (
+                                        <input
+                                            disabled
+                                            value={this.state.password}
+                                            type="password"
+                                            name="password"
+                                            id="password"
+                                            onChange={this.handleChange}
+                                            className="input is-medium"
+                                            placeholder="password"
+                                        />
+                                    ) : (
+                                        <input
+                                            value={this.state.password}
+                                            type="password"
+                                            name="password"
+                                            id="password"
+                                            onChange={this.handleChange}
+                                            className="input is-medium"
+                                            placeholder="password"
+                                        />
+                                    )}
                                 </div>
                             </div>
                         </form>
@@ -199,7 +232,7 @@ export class CreateUser extends React.Component {
 const {
     func, bool, string, objectOf,
 } = PropTypes;
-CreateUser.propTypes = {
+ManageUser.propTypes = {
     /* eslint-disable react/no-typos */
     createUser: func.isRequired,
     loadingCreateEdit: bool.isRequired,
@@ -222,7 +255,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = dispatch =>
     bindActionCreators({ createUser, editUser, cleanState }, dispatch);
 
-const fbWrapped = firebaseConnect()(CreateUser);
+const fbWrapped = firebaseConnect()(ManageUser);
 
 const connectProfile = connect(({ firebase }) => ({
     profile: pathToJS(firebase, 'profile'),

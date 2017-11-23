@@ -68,7 +68,7 @@ export function getWeekAvg(records, date, resultsType) {
 
 export function getWeeklyAvgArr(records, resultsType, amount, endDate) {
     let results = [];
-    for (let i = 0; i < amount; i++) {
+    for (let i = 0; i < amount; i += 1) {
         let auxDate = moment().subtract(i, 'week');
         if (endDate) {
             const endDateClone = endDate.clone();
@@ -82,7 +82,7 @@ export function getWeeklyAvgArr(records, resultsType, amount, endDate) {
 
 export function getWeekDates(amount, endDate) {
     let labels = [];
-    for (let i = 0; i < amount; i++) {
+    for (let i = 0; i < amount; i += 1) {
         let auxDate = moment().subtract(i, 'week');
         if (endDate) {
             const endDateClone = endDate.clone();

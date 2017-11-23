@@ -12,7 +12,7 @@ import Header from '../Header';
 import TimesTable from '../../components/TimesTable';
 import Report from '../../components/Report';
 
-import { EDIT_RECORD, DASHBOARD, MANAGEMENT } from '../../consts/routes';
+import { MANAGE_RECORD, DASHBOARD, MANAGEMENT } from '../../consts/routes';
 
 import './style.css';
 
@@ -104,7 +104,7 @@ export class Dashboard extends React.Component {
                                     <Link
                                         push
                                         to={{
-                                            pathname: EDIT_RECORD,
+                                            pathname: MANAGE_RECORD,
                                             uid: this.props.location.uid,
                                         }}
                                         id="edit-record-uid"
@@ -114,7 +114,7 @@ export class Dashboard extends React.Component {
                                         </button>
                                     </Link>
                                 ) : (
-                                    <Link to={EDIT_RECORD} id="edit-record">
+                                    <Link to={MANAGE_RECORD} id="edit-record">
                                         <button className="add-record-button button is-primary is-medium">
                                             Add Record
                                         </button>
