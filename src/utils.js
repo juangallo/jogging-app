@@ -66,20 +66,26 @@ export function getWeekAvg(records, date, resultsType) {
     }
 }
 
-export function getWeeklyAvgArr(records, resultsType, amount) {
+export function getWeeklyAvgArr(records, resultsType, amount, endDate) {
     let results = [];
     for (let i = 0; i < amount; i++) {
-        const auxDate = moment().subtract(i, 'week');
+        let auxDate = moment().subtract(i, 'week');
+        if (endDate) {
+            auxDate = endDate.subtract(i, 'week');
+        }
         results = [getWeekAvg(records, auxDate, resultsType), ...results];
     }
 
     return results;
 }
 
-export function getWeekDates(amount) {
+export function getWeekDates(amount, endDate) {
     let labels = [];
     for (let i = 0; i < amount; i++) {
-        const auxDate = moment().subtract(i, 'week');
+        let auxDate = moment().subtract(i, 'week');
+        if (endDate) {
+            auxDate = endDate.subtract(i, 'week');
+        }
         const str = `${auxDate.startOf('isoweek').format('MM/DD')} - ${auxDate
             .endOf('isoweek')
             .format('MM/DD')}`;

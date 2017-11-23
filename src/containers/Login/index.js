@@ -8,7 +8,7 @@ import { DASHBOARD, HOME, MANAGEMENT } from '../../consts/routes';
 
 import './style.css';
 
-class Login extends React.Component {
+export class Login extends React.Component {
     constructor(props) {
         super(props);
 
@@ -48,7 +48,11 @@ class Login extends React.Component {
 
     displayErrors() {
         if (this.state.errorMessage) {
-            return <div className="notification is-danger">{this.state.errorMessage}</div>;
+            return (
+                <div className="notification is-danger" id="error">
+                    {this.state.errorMessage}
+                </div>
+            );
         }
     }
 
@@ -57,9 +61,9 @@ class Login extends React.Component {
             switch (this.props.profile.role) {
             case 'manager':
             case 'admin':
-                return <Redirect push to={MANAGEMENT} />;
+                return <Redirect push to={MANAGEMENT} id="redirect-management" />;
             case 'user':
-                return <Redirect push to={DASHBOARD} />;
+                return <Redirect push to={DASHBOARD} id="redirect-dashboard" />;
             default:
                 return <div className="notification is-danger">Invalid Role</div>;
             }

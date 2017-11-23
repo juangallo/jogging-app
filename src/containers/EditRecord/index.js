@@ -14,7 +14,7 @@ import { DASHBOARD } from '../../consts/routes';
 
 import './style.css';
 
-class EditRecord extends React.Component {
+export class EditRecord extends React.Component {
     constructor(props) {
         super(props);
 
@@ -111,7 +111,11 @@ class EditRecord extends React.Component {
 
     displayErrors() {
         if (this.state.errorMessage) {
-            return <div className="notification is-danger">{this.state.errorMessage}</div>;
+            return (
+                <div className="notification is-danger" id="error">
+                    {this.state.errorMessage}
+                </div>
+            );
         }
     }
 
@@ -125,10 +129,11 @@ class EditRecord extends React.Component {
                             pathname: `${DASHBOARD}/${this.props.location.uid}`,
                             uid: this.props.location.uid,
                         }}
+                        id="redirectOther"
                     />
                 );
             }
-            return <Redirect push to={DASHBOARD} />;
+            return <Redirect push to={DASHBOARD} id="redirectOwn" />;
         }
     }
 
@@ -140,9 +145,13 @@ class EditRecord extends React.Component {
                 <div className="hero-body">
                     <div className="container has-text-centered record-container">
                         {this.props.match.params.recordId ? (
-                            <h1 className="title is-1">Edit Record</h1>
+                            <h1 className="title is-1" id="edit-record-title">
+                                Edit Record
+                            </h1>
                         ) : (
-                            <h1 className="title is-1">New Record</h1>
+                            <h1 className="title is-1" id="new-record-title">
+                                New Record
+                            </h1>
                         )}
                         <form className="container edit-record-form">
                             {this.displayErrors()}

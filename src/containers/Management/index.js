@@ -38,7 +38,7 @@ class Management extends Component {
                     <div className="container has-text-centered">
                         <div className="title is-1">Management</div>
                         <div>
-                            <Link push to={CREATE_USER}>
+                            <Link to={CREATE_USER}>
                                 <button className="add-record-button button is-primary is-medium">
                                     Add User
                                 </button>
