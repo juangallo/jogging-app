@@ -9,16 +9,21 @@ import { EDIT_RECORD } from '../../consts/routes';
 
 import { convertToKmH } from '../../utils';
 
+const getHours = (time) => {
+    const val = Math.floor(time / 3600);
+    return val < 10 ? `0${val}` : val;
+};
+
+const getMinutes = (time) => {
+    const val = Math.floor((time % 3600) / 60);
+    return val < 10 ? `0${val}` : val;
+};
+
 export const RecordsTableRow = props => (
     <tr>
         <th>{moment.unix(props.date).format('MM/DD/YY')}</th>
         <td>{(props.distance / 1000).toFixed(2)} km</td>
-        <td>
-            {moment()
-                .startOf('d')
-                .seconds(props.time)
-                .format('HH:mm')}
-        </td>
+        <td>{`${getHours(props.time)}:${getMinutes(props.time)}`}</td>
         <td>{convertToKmH(props.speed)} km/h</td>
         <td>
             <button onClick={() => props.firebase.remove(`records/${props.id}`)}>
@@ -29,10 +34,7 @@ export const RecordsTableRow = props => (
                     pathname: `${EDIT_RECORD}/${props.id}`,
                     date: props.date,
                     distance: props.distance,
-                    time: moment()
-                        .startOf('d')
-                        .seconds(props.time)
-                        .format('HH:mm'),
+                    time: `${getHours(props.time)}:${getMinutes(props.time)}}`,
                     timeRaw: props.time,
                     uid: props.user,
                 }}
