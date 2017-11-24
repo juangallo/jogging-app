@@ -231,11 +231,14 @@ export class EditRecord extends React.Component {
     }
 }
 
+const { match, location } = ReactRouterPropTypes;
+const { objectOf, func, any } = PropTypes;
 EditRecord.propTypes = {
-    match: ReactRouterPropTypes.match.isRequired,
-    firebase: PropTypes.objectOf(PropTypes.func).isRequired,
-    location: ReactRouterPropTypes.location.isRequired,
-    auth: PropTypes.objectOf(PropTypes.any).isRequired,
+    /* eslint-disable react/no-typos */
+    match: match.isRequired,
+    firebase: objectOf(func).isRequired,
+    location: location.isRequired,
+    auth: objectOf(any).isRequired,
 };
 
 const fbWrapped = firebaseConnect()(EditRecord);

@@ -10,7 +10,7 @@ import { MANAGE_USER, MANAGE_RECORD, MANAGEMENT, DASHBOARD, LOGIN, HOME } from '
 
 import ManageUser from './containers/ManageUser';
 import ManageRecord from './containers/ManageRecord';
-import Manager from './containers/Management';
+import Management from './containers/Management';
 import Dashboard from './containers/Dashboard';
 import SignUp from './containers/SignUp';
 import Login from './containers/Login';
@@ -25,7 +25,7 @@ render(
                 <Route path={MANAGE_USER} component={ManageUser} />
                 <Route path={`${MANAGE_RECORD}/:recordId`} component={ManageRecord} />
                 <Route path={MANAGE_RECORD} component={ManageRecord} />
-                <Route path={MANAGEMENT} component={Manager} />
+                <Route path={MANAGEMENT} component={Management} />
                 <Route path={`${DASHBOARD}/:uid`} component={Dashboard} />
                 <Route path={DASHBOARD} component={Dashboard} />
                 <Route path={LOGIN} component={Login} />

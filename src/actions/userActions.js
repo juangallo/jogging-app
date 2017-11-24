@@ -69,7 +69,7 @@ const editUserError = payload => ({
 export const editUser = user => (dispatch) => {
     dispatch(editUserRequest(user));
     return axios
-        .post(`${API_URL}/${ENDPOINT_EDIT_USER}`, {
+        .put(`${API_URL}/${ENDPOINT_EDIT_USER}`, {
             uid: user.uid,
             email: user.email,
             password: user.password,

@@ -1,8 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { DASHBOARD, MANAGEMENT } from '../../consts/routes';
-
 import { RecordsTableRow } from './';
 
 describe('RecordsTableRow', () => {
