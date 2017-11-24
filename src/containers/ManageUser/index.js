@@ -60,10 +60,11 @@ export class ManageUser extends React.Component {
 
     editUser() {
         const {
-            email, uid, username, role,
+            email, uid, username, role, password,
         } = this.state;
         this.props.editUser({
             email,
+            password,
             uid,
             username,
             role,
