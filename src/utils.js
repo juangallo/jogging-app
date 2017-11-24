@@ -89,7 +89,7 @@ export function getWeekDates(amount, endDate) {
             auxDate = endDateClone.subtract(i, 'week');
         }
         const str = `${auxDate.startOf('isoweek').format('MM/DD')} - ${auxDate
-            .endOf('week')
+            .endOf('isoweek')
             .format('MM/DD')}`;
         labels = [str, ...labels];
     }
